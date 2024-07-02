@@ -89,3 +89,16 @@ class Piece:
                     valid = True
 
         return valid
+
+    def valid_knight_move(self, start_pos, end_pos, board):
+        start_row, start_col = start_pos
+        end_row, end_col = end_pos
+
+        valid = False
+        if (abs(start_row - end_row) == 2 and abs(start_col - end_col) == 1) or (abs(start_row - end_row) == 1 and abs(start_col - end_col) == 2):
+            if board[end_row][end_col] is None:
+                valid = True
+            elif board[end_row][end_col].color != self.color:
+                valid = True
+
+        return valid
