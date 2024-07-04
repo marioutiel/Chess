@@ -94,11 +94,39 @@ class Piece:
         start_row, start_col = start_pos
         end_row, end_col = end_pos
 
+        row_diff = abs(start_row - end_row)
+        col_diff = abs(start_col - end_col)
+
         valid = False
-        if (abs(start_row - end_row) == 2 and abs(start_col - end_col) == 1) or (abs(start_row - end_row) == 1 and abs(start_col - end_col) == 2):
+        if (row_diff == 2 and col_diff == 1) or (row_diff == 1 and col_diff == 2):
             if board[end_row][end_col] is None:
                 valid = True
             elif board[end_row][end_col].color != self.color:
                 valid = True
+
+        return valid
+    
+    def valid_bishop_move(self, start_pos, end_pos, board):
+        start_row, start_col = start_pos
+        end_row, end_col = end_pos
+
+        row_diff = start_row - end_row
+        col_diff = start_col - end_col
+
+        valid = False
+        if row_diff != 0 and col_diff != 0 and abs(row_diff) == abs(col_diff):
+            row_sign = int(-row_diff / abs(row_diff))
+            col_sign = int(-col_diff / abs(col_diff))
+
+            blocking_piece = False
+            for i in range(1,abs(row_diff)):
+                if board[start_row+row_sign*i][start_col+col_sign*i] is not None:
+                    blocking_piece = True
+
+            if not blocking_piece:
+                if board[end_row][end_col] is None:
+                    valid = True
+                elif board[end_row][end_col].color != self.color:
+                    valid = True
 
         return valid
