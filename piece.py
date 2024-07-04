@@ -130,3 +130,79 @@ class Piece:
                     valid = True
 
         return valid
+    
+
+    def valid_queen_move(self, start_pos, end_pos, board):
+        start_row, start_col = start_pos
+        end_row, end_col = end_pos
+
+        row_diff = start_row - end_row
+        col_diff = start_col - end_col
+
+        valid = False
+        if start_col == end_col:
+            blocking_piece = False
+            if start_row > end_row:
+                for row in range(start_row-1, end_row, -1):
+                    if board[row][end_col] is not None:
+                        blocking_piece = True
+            else:
+                for row in range(start_row+1, end_row):
+                    if board[row][end_col] is not None:
+                        blocking_piece = True
+
+            if not blocking_piece:
+                if board[end_row][end_col] is None:
+                    valid = True
+                elif board[end_row][end_col].color != self.color:
+                    valid = True
+
+        elif start_row == end_row:
+            blocking_piece = False
+            if start_col > end_col:
+                for col in range(start_col-1, end_col, -1):
+                    if board[end_row][col] is not None:
+                        blocking_piece = True
+            else:
+                for col in range(start_col+1, end_col):
+                    if board[end_row][col] is not None:
+                        blocking_piece = True
+
+            if not blocking_piece:
+                if board[end_row][end_col] is None:
+                    valid = True
+                elif board[end_row][end_col].color != self.color:
+                    valid = True
+
+        elif row_diff != 0 and col_diff != 0 and abs(row_diff) == abs(col_diff):
+            row_sign = int(-row_diff / abs(row_diff))
+            col_sign = int(-col_diff / abs(col_diff))
+
+            blocking_piece = False
+            for i in range(1,abs(row_diff)):
+                if board[start_row+row_sign*i][start_col+col_sign*i] is not None:
+                    blocking_piece = True
+
+            if not blocking_piece:
+                if board[end_row][end_col] is None:
+                    valid = True
+                elif board[end_row][end_col].color != self.color:
+                    valid = True
+
+        return valid
+    
+    def valid_king_move(self, start_pos, end_pos, board):
+        start_row, start_col = start_pos
+        end_row, end_col = end_pos
+
+        row_diff = abs(start_row - end_row)
+        col_diff = abs(start_col - end_col)
+
+        valid = False
+        if row_diff <= 1 and col_diff <= 1:
+            if board[end_row][end_col] is None:
+                valid = True
+            elif board[end_row][end_col].color != self.color:
+                valid = True 
+
+        return valid
