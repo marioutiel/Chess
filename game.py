@@ -9,6 +9,7 @@ class Game:
         self.board = Board()
         self.selected_piece = None
         self.selected_pos = None
+        self.turn = 'white'
 
     def draw_board(self):
         colors = [pygame.Color(238, 238, 210), pygame.Color(118, 150, 86)]
@@ -24,7 +25,8 @@ class Game:
     def handle_click(self, pos):
         row, col = pos[1] // 50, pos[0] // 50
         if self.selected_piece:
-            self.board.move_piece(self.selected_pos, (row, col))
+            if self.selected_piece.color == self.turn and self.board.move_piece(self.selected_pos, (row, col)):
+                self.turn = 'black' if self.turn == 'white' else 'white'
             self.selected_piece = None
             self.selected_pos = None
         else:

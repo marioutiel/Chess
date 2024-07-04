@@ -29,9 +29,14 @@ class Board:
         start_row, start_col = start_pos
         end_row, end_col = end_pos
         piece = self.board[start_row][start_col]
+
+        valid_move = False
         if piece and piece.is_valid_move(start_pos, end_pos, self.board):
             self.board[end_row][end_col] = piece
             self.board[start_row][start_col] = None
+            valid_move = True
+
+        return valid_move
 
     def print_board(self):
         for row in self.board:
